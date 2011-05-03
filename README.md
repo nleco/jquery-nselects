@@ -8,7 +8,7 @@ Add the JS file in your JS directory and link to it. You may also use the given 
 
 ### Usage/Examples
 
-TBA
+TBA - this is still under development.
 
 ### License
 

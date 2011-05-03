@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>nselects examples</title>
+
+	<link rel="stylesheet" href="jquery.nselects.css">
+	
+	<style>
+	body {
+		min-height: 500px;
+	}
+	.row {
+		padding: 10px;
+		margin-bottom: 10px;
+	}
+	</style>
+</head>
+<body>
+	
+<form name="example-form">
+	<div class="row">
+		<label for="foo">a normal select</label>
+		<select id="foo" name="foo" class="ns">
+			<option value="0">DEE</option>
+			<option value="1">FO</option>
+			<option value="2">BAR</option>
+			<option value="3" selected>BEER</option>
+			<option value="4">ZEE</option>
+		</select>
+	</div>
+	<div class="row">
+		<label for="foo2">a normal select</label>
+		<select id="foo2" name="foo2" class="ns">
+			<option value="a">some stuff</option>
+			<option value="b">can go here</option>
+			<option value="cc" selected>or here</option>
+			<option value="ddd">can go here too</option>
+			<option value="e">but not there</option>
+		</select>
+	</div>
+	<div class="row">
+		<label for="foo3">a normal select</label>
+		<select id="foo3" name="foo3">
+			<option value="a">some stuff</option>
+			<option value="b">can go here</option>
+			<option value="cc" selected>or here</option>
+			<option value="ddd">can go here too</option>
+			<option value="e">but not there</option>
+		</select>
+	</div>
+	<div class="row">
+		<input type="submit" value="Submit"/>
+	</div>
+</form>
+
+<a class='test' href="#test">click</a>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+<script>!window.jQuery && document.write('<script src="jquery-1.4.2.min.js"><\/script>')</script>
+<script src="jquery.nselects.js"></script>
+<script>
+$(function(){
+	$('select.ns').nselects();
+	$('a.test').click(function(e){
+		$('a.ns:first').focus();
+		e.preventDefault();
+	});
+});
+</script>
+</body>
+</html>
