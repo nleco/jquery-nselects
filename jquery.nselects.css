@@ -1,3 +1,4 @@
+/* the main container */
 .nselects,
 a.nselects {
 	position: relative;
@@ -11,10 +12,12 @@ a.nselects {
 	border-radius: 3px;
 }
 
+/* when you are focused on that element */
 a.nselects-focused {
 	border-color: #3E50F9;
 }
 
+/* the text of the displayed element */
 .nselects-text {
 	color: #000;
 	margin: 0 7px 0 5px;
@@ -24,6 +27,7 @@ a.nselects-focused {
 	text-align: left;
 }
 
+/* the area where the icon may exist, usually a down arrow */
 .nselects-icon {
 	background-color: #000;
 	height: 5px;
@@ -33,6 +37,7 @@ a.nselects-focused {
 	right: 5px;
 }
 
+/* the menu item main container that's shown */
 .nselects-menu {
 	background-color: #fff;
 	border: 1px solid #ddd;
@@ -42,37 +47,42 @@ a.nselects-focused {
 	border-radius: 3px;
 }
 
+/* the list used for the options */
 .nselects-menu-list {
 	list-style: none none;
 	margin: 0;
 	padding: 0;
 }
 
+/* the actual list item */
 .nselects-menu-list-item {
 	position: relative;
+	text-align: left;
+	font-size: 12px;
+	padding: 3px;
 }
-
-.nselects-menu-list-item:hover {
-	background-color: #3E50F9;
-}
-
-.nselects-menu-list-item-selected {
-	font-weight: bold;
-}
-
+/* the actual link in the list */
 .nselects-menu-list-link {
 	color: #111;
 	text-decoration: none;
 }
+/* an extra wrapping around the list text just in case you need to do something else */
+.nselects-menu-list-wrap {}
 
+
+/* the selected item that's currently the value of the element */
+.nselects-menu-list-item-selected {
+	background-color: #ddd;
+}
+
+
+/* the items hover over */
+.nselects-menu-list-item:hover {
+	background-color: #3E50F9;
+}
 .nselects-menu-list-item:hover .nselects-menu-list-link {
 	display: block;
 	color: #eee;
 	height: 100%;
 }
 
-.nselects-menu-list-wrap {
-	text-align: left;
-	font-size: 12px;
-	padding: 3px;
-}

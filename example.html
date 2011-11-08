@@ -22,21 +22,21 @@
 	<div class="row">
 		<label for="foo">a normal select</label>
 		<select id="foo" name="foo" class="ns">
-			<option value="0">DEE</option>
-			<option value="1">FO</option>
-			<option value="2">BAR</option>
-			<option value="3" selected>BEER</option>
-			<option value="4">ZEE</option>
+			<option value="dee1">DEE</option>
+			<option value="fo1">FO</option>
+			<option value="bar2">BAR</option>
+			<option value="beer3" selected>BEER</option>
+			<option value="zee4">ZEE</option>
 		</select>
 	</div>
 	<div class="row">
 		<label for="foo2">a normal select</label>
 		<select id="foo2" name="foo2" class="ns">
-			<option value="a">some stuff</option>
-			<option value="b">can go here</option>
-			<option value="cc" selected>or here</option>
-			<option value="ddd">can go here too</option>
-			<option value="e">but not there</option>
+			<option value="some stuff a">some stuff</option>
+			<option value="can go here b">can go here</option>
+			<option value="or here cc" selected>or here</option>
+			<option value="can go here too ddd">can go here too</option>
+			<option value="but not here e">but not there</option>
 		</select>
 	</div>
 	<div class="row">
@@ -61,7 +61,9 @@
 <script src="jquery.nselects.js"></script>
 <script>
 $(function(){
-	$('select.ns').nselects();
+	$('select.ns').nselects({
+		menuStyle: 'down'
+	});
 	$('a.test').click(function(e){
 		$('a.ns:first').focus();
 		e.preventDefault();

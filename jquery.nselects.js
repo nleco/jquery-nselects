@@ -13,12 +13,14 @@
 (function($) {
 	var settings = {
 		postInit : false,
-		postOptionClick : false
+		postOptionClick : false,
+		menuStyle : 'overlay'
 	};
 
 	var key_map = {
 		tab : 9,
 		enter : 13,
+		esc : 27,
 		up : 38,
 		left: 37,
 		right: 39,
@@ -36,18 +38,21 @@
 			
 			ret = this.each(function(index){
 				var t = $(this),
+					w = t.innerWidth()+20,
+					h = t.innerHeight(),
 					opts = $('option', t),
-					nsel = $('<a href="javascript:;" class="nselects" style="height:'+t.height()+'px;width:'+t.width()+'px">'),
-					nsel_text = $('<div>').addClass('nselects-text').attr('style', 'line-height:'+t.height()+'px'),
+					nsel = $('<a href="javascript:;" class="nselects" style="height:'+h+'px;width:'+w+'px">'),
+					nsel_text = $('<div>').addClass('nselects-text').attr('style', 'line-height:'+h+'px'),
 					nsel_icon = $('<div class="nselects-icon">'),
-					nsel_menu = $('<div class="nselects-menu" style="display:none;position:absolute;min-width:'+t.width()+'px">');
+					nsel_menu = $('<div class="nselects-menu" style="display:none;position:absolute;min-width:'+w+'px">');
 				
 				//Hide the original select -----------------------------------------------------
 				t.hide();
 				
-				//transfer over some attributes ------------------------------------------------
-				if (t.attr('id'))
+				//transfer over some ids/classes/attributes ------------------------------------------------
+				if (t.attr('id')) {
 					nsel.attr(t.attr('id')+'-nselects');
+				}
 				
 				if (t.attr('class')) {
 					var s = t.attr('class').split('\s+'),
@@ -63,8 +68,9 @@
 					t.removeAttr('tabindex');
 				}
 				
-				if (t.attr('title'))
+				if (t.attr('title')) {
 					nsel.attr(t.attr('title'));
+				}
 				
 				// do the manipulation/setting up of elements ----------------------------------
 				// the initial text
@@ -73,13 +79,14 @@
 				// set up the menu
 				var nsel_menu_list = $('<ul class="nselects-menu-list">'),
 					selected_index = t.attr('selectedIndex');
+					
 				opts.each(function(i){
 					var t = $(this),
 						list_item = $('<li class="nselects-menu-list-item"><a href="#" value="'+t.val()+'" class="nselects-menu-list-link"><div class="nselects-menu-list-wrap">'+t.text()+'</div></a></li>');
 					
-					if (i == selected_index)
+					if (i == selected_index) {
 						list_item.addClass('nselects-menu-list-item-selected')
-						
+					}
 					nsel_menu_list.append(list_item);
 				});
 				nsel_menu.append(nsel_menu_list);
@@ -99,19 +106,66 @@
 				// combine them and set them in the DOM ----------------------------------------
 				nsel.append(nsel_text).append(nsel_icon);
 				t.after(nsel);
-				
-				//user defined post init action
-				if (typeof settings.postOptionClick === 'function')
-					settings.postOptionClick(nsel, nsel_menu, t);
 			});
 
-			//set event 
+			//the mouse click that opens the select options
+			// todo: figure out how to trigger this via 'live' and work with the the outside click closer
+			//       that way we wont bind this on every select
 			$('a.nselects').bind('click.nselects', function(e){
+				e.stopPropagation();
+				e.preventDefault();
 				methods.toggleMenu(e, $(this), false);
+				$(this).addClass();
 			});
-			
+
+			//set event once			
 			if (!bd.data('nselects-lives')) {
-				//SELECT events	
+				//lets make sure this doesn't run again
+				bd.data('nselects-lives', true);
+				
+				// key events when focused
+				$('a.nselects').keydown(function(e){
+					var t = $(this),
+						org = t.data('nselects-org'),
+						menu = t.data('nselects-menu'),
+						fcc;
+					
+					//todo: enter - if not open, open. else close if none is selected.
+					switch(e.keyCode) {
+						case key_map.enter:
+							methods.toggleMenu(e, t, false);
+							break;
+							
+						case key_map.tab:
+							methods.hideMenus();
+							break;
+							
+						case key_map.down:
+						case key_map.right:
+							methods.nextItem(t, menu, org);
+							e.preventDefault();
+							break;
+							
+						case key_map.up:
+						case key_map.left:
+							methods.prevItem(t, menu, org);
+							e.preventDefault();
+							break;
+						
+						case key_map.esc:
+							methods.escMenu();
+							e.preventDefault();
+							break;
+							
+						default:
+							fcc = String.fromCharCode(e.keyCode);
+							e.preventDefault();
+							break;
+					}
+					
+				});
+				
+				//SELECT events	to trigger states
 				$('a.nselects').live('focus.nselects', function(e){
 					$(this).addClass('nselects-focused');
 				});
@@ -126,43 +180,6 @@
 				
 				$('a.nselects').live('mouseout.nselects', function(e){
 					$(this).removeClass('nselects-mouseover');
-				});
-				
-				$('a.nselects').keydown(function(e){
-					var t = $(this),
-						org = t.data('nselects-org'),
-						menu = t.data('nselects-menu');
-					
-					//todo: enter - if not open, open. else close if none is selected.
-					
-					switch(e.keyCode)
-					{
-						case key_map.enter:
-							methods.toggleMenu(e, t, false);
-							break;
-							
-						case key_map.tab:
-							methods.hideAllMenus();
-							break;
-							
-						case key_map.down:
-						case key_map.right:
-							methods.nextItem(t, menu, org);
-							e.preventDefault();
-							break;
-							
-						case key_map.up:
-						case key_map.left:
-							methods.prevItem(t, menu, org);
-							e.preventDefault();
-							break;
-								
-						default:
-							String.fromCharCode(e.keyCode);
-							e.preventDefault();
-							break;
-					}
-					
 				});
 				
 				//MENU events
@@ -186,21 +203,32 @@
 				});
 				
 				//HIDE ON OUTSIDE CLICKS
-				bd.live('click.nselects', methods.hideAllMenus);
-				
-				bd.data('nselects-lives', true);
+				bd.live('click.nselects', function(e){
+					e.preventDefault();
+					methods.hideMenus();
+				});
+			}
+			
+			//user defined post init action
+			if (typeof settings.postInit === 'function') {
+				settings.postInit(ret);
 			}
 			
 			return ret;
 		},
-		toggleMenu : function(e, link, index) { //e = event, t = link, index = s
+		toggleMenu : function(e, link, index) {
+			e.stopPropagation();
+			e.preventDefault();
+			
 			var org = link.data('nselects-org'),
 				menu = link.data('nselects-menu');
 				off = link.offset(),
 				lis = $('li.nselects-menu-list-item', menu),
-				selected_index = org.attr('selectedIndex');
+				selected_index = org.attr('selectedIndex'),
+				top_sum = off.top,
+				top_left = off.left;
 
-			methods.hideAllMenus(menu, link);
+			methods.hideMenus(menu);
 			
 			link.toggleClass('nselects-active');
 			if (link.hasClass('nselects-active')) {
@@ -211,47 +239,54 @@
 				link.removeClass('nselects-menu-open');
 			}					
 			
-			var top_sum = off.top;
-			lis.each(function(i){
-				if (i >= selected_index)
-					return false;
+			//how/where to show menu
+			if (settings.menuStyle == 'down') { //show downwards
+				top_sum += lis.first().innerHeight();
+			} else { // 'overlay' is default
+				lis.each(function(i){
+					if (i >= selected_index)
+						return false;
 					
-				top_sum -= $(this).height();
+					top_sum -= inHeight;
 				
-				if (top_sum < 0) {
-					top_sum = 0;
-					return false;
-				}
-			});
-			menu.css({top: top_sum+'px', left: off.left+'px'});
+					if (top_sum < 0) {
+						top_sum = 0;
+						return false;
+					}
+				});
+			}
+			menu.css({top: top_sum+'px', left: top_left+'px'});
 			
 			link.addClass('nselects-focused');
-			
-			e.stopPropagation();
-			e.preventDefault();
 		},
 		//Hide all except the passed in menu, if given
-		hideAllMenus : function(menu, link) {
+		hideMenus : function(menu) {
 			//Hide the menus if visible
 			var m = $('.nselects-menu'),
 				s = $('.nselects');
-
-			if (menu)
+			if (menu) {
 				m = m.not(menu);
-
+			}
 			m.hide();
 
-			if (link)
-				s = s.not(link);
-				
 			s.removeClass('nselects-active');
 			$('.nselects-focused', s).removeClass('nselects-focused');
 		},
+		// event for when you select the previous item
 		nextItem : function(link, menu, org) {
 			
 		},
+		// event for when you select the next item
 		prevItem : function() {
 		
+		},
+		// event when someone picks a new value
+		selectItem : function(item) {
+			
+		},
+		// event for other keys pressed, mainly searching, while the menu item is open
+		searchSelectItem : function() {
+			
 		}
 	};
 
