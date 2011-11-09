@@ -53,7 +53,7 @@
 						h = t.innerHeight(),
 						opts = $('option', t),
 						nsel = $('<a href="javascript:;" class="nselects" style="height:'+h+'px;width:'+w+'px">'),
-						nsel_text = $('<div>').addClass('nselects-text').attr('style', 'line-height:'+h+'px'),
+						nsel_text = $('<div>').addClass('nselects-text'),
 						nsel_icon = $('<div class="nselects-icon">'),
 						nsel_menu = $('<div class="nselects-menu nselects-menu-style-'+settings.menuStyle+'" style="display:none;position:absolute;min-width:'+w+'px">');
 				

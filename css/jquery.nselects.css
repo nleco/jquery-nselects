@@ -23,19 +23,19 @@ a.nselects-focused {
 	margin: 0 15px 0 5px;
 	overflow: hidden;
 	font-size: 12px;
+	line-height: 16px;
 	height:  inherit;
 	text-align: left;
 }
 
 /* the area where the icon may exist, usually a down arrow */
 .nselects-icon {
-	background-color: #000;
-	height: 5px;
-	width: 5px;
+	height: 12px;
+	width: 10px;
 	position: absolute;
-	top: 5px;
+	top: 2px;
 	right: 5px;
-	backround: url(img/jquery-nselects-down-arrow.gif);
+	background: url(img/jquery-nselects-down-arrow.gif) no-repeat;
 }
 
 /* the menu item main container that's shown */
