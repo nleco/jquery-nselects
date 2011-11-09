@@ -8,8 +8,8 @@ Add the JS file in your JS directory and link to it. You may also use the given 
 
 ### Usage/Examples
 
-TBA - this is still under development.
+TBA - this is still under development. It is not heavily tested.
 
 ### License
 
-nselects is under teh MIT and GPL license.
+nselects is under the MIT and GPL license.

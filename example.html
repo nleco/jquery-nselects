@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<title>nselects examples</title>
 
-	<link rel="stylesheet" href="jquery.nselects.css">
+	<link rel="stylesheet" href="css/jquery.nselects.css">
 	
 	<style>
 	body {
@@ -18,7 +18,7 @@
 </head>
 <body>
 	
-<form name="example-form">
+<form id="example-form" action="example.html" method="get">
 	<div class="row">
 		<label for="foo">a normal select</label>
 		<select id="foo" name="foo" class="ns">
@@ -43,6 +43,9 @@
 		<label for="foo3">a normal select</label>
 		<select id="foo3" name="foo3">
 			<option value="a">some stuff</option>
+			<option value="a">same stuff</option>
+			<option value="a">saame stuff</option>
+			<option value="a">sbaome stuff</option>
 			<option value="b">can go here</option>
 			<option value="cc" selected>or here</option>
 			<option value="ddd">can go here too</option>
@@ -53,19 +56,25 @@
 		<input type="submit" value="Submit"/>
 	</div>
 </form>
-
+<div id='output'></div>
 <a class='test' href="#test">click</a>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-<script>!window.jQuery && document.write('<script src="jquery-1.4.2.min.js"><\/script>')</script>
-<script src="jquery.nselects.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script>!window.jQuery && document.write('<script src="js/jquery-1.6.4.min.js"><\/script>')</script>
+<script src="js/jquery.nselects.js"></script>
 <script>
 $(function(){
 	$('select.ns').nselects({
 		menuStyle: 'down'
 	});
+	
+	$('#example-form').submit(function(e){
+		$('#output').html($(this).serialize());
+		return true;
+	});
+	
 	$('a.test').click(function(e){
-		$('a.ns:first').focus();
+		alert('click');	
 		e.preventDefault();
 	});
 });

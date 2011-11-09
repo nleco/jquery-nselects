@@ -20,7 +20,7 @@ a.nselects-focused {
 /* the text of the displayed element */
 .nselects-text {
 	color: #000;
-	margin: 0 7px 0 5px;
+	margin: 0 15px 0 5px;
 	overflow: hidden;
 	font-size: 12px;
 	height:  inherit;
@@ -35,6 +35,7 @@ a.nselects-focused {
 	position: absolute;
 	top: 5px;
 	right: 5px;
+	backround: url(img/jquery-nselects-down-arrow.gif);
 }
 
 /* the menu item main container that's shown */
@@ -46,6 +47,7 @@ a.nselects-focused {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 }
+
 
 /* the list used for the options */
 .nselects-menu-list {
@@ -77,10 +79,12 @@ a.nselects-focused {
 
 
 /* the items hover over */
-.nselects-menu-list-item:hover {
+.nselects-menu-list-item:hover,
+.nselects-menu-list-item-hover {
 	background-color: #3E50F9;
 }
-.nselects-menu-list-item:hover .nselects-menu-list-link {
+.nselects-menu-list-item:hover .nselects-menu-list-link,
+.nselects-menu-list-item-hover .nselects-menu-list-link {
 	display: block;
 	color: #eee;
 	height: 100%;
